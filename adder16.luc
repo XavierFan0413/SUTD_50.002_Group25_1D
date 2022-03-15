@@ -1,0 +1,33 @@
+module 16_bit_adder ( 
+    input x[16], 
+    input y[16], 
+    input cin, 
+    output S[16], 
+    output cout, 
+    output z[1], 
+    output v[1], 
+    output n[1], 
+) 
+ 
+{  
+sig s[16]; // connector 
+ 
+{ 
+full_adder fulladder[16]; //declare 16 Full Adder Units 
+} 
+ 
+{ 
+full_adder fulladder[16]; 
+always {  //Define the connections 
+ fulladder.x = x; 
+ fulladder.y = y; 
+ fulladder.cin[0] = cin; 
+ fulladder.cin[15:1] = fulladder.cout[14:0]; 
+ s = fulladder.s; 
+ cout = fulladder.cout[15]; 
+ 
+    n = s[15]; 
+    v = (x[15] & (y[15] & !s[15]) | (!x[15] & !(y[15] & s[15]);  
+    z = ~|s; 
+ } 
+}
