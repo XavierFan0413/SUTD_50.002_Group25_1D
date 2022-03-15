@@ -1,0 +1,49 @@
+//1-bit Full Adder------------------ 
+module full_adder ( 
+    input x, 
+    input y, 
+    input cin, 
+    output s, 
+    output cout, 
+) 
+ 
+{ 
+sig i, j, k; // connector 
+ 
+always { 
+ 
+ s = x ^ y ^ cin; 
+ 
+ i = x & y; 
+ j = x & cin; 
+ k = y & cin; 
+ 
+ cout = i | j | k; 
+ } 
+} 
+ 
+//Connect Unit to I/O for Testing (1-bit Full Adder)------------------ 
+sig rst; // reset signal 
+full_adder fulladder; 
+ 
+io_sel = 4hf; // select no digits 
+ 
+fulladder.x = io_dip[0][0]; 
+fulladder.y = io_dip[0][1]; 
+fulladder.cin = io_dip[0][2]; 
+ 
+io_led[2][1] = fulladder.s; 
+io_led[2][0] = fulladder.cout; 
+ 
+//1-bit Full Adde ROM----------------------------------------------------- 
+module full_adder_ROM ( 
+ input address[3], // 3 bit, address[2] is x, address[1] is y, address[0] is cin 
+ output value[2] // 2 bit, value[0] is cout, value[1] is s 
+  )  
+{ 
+  const FULL_ADDER = {b11, b01, b01, b10, b01, b10, b10, b00}; 
+  always  
+  { 
+     value = FULL_ADDER[address]; 
+  } 
+}
